@@ -103,9 +103,9 @@
                         </goals>
                     </execution>
                 </executions>
-                <groupId>com.spotify</groupId>
+                <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>0.4.11</version>
+                <version>0.42.1</version>
                 <configuration>
                     <imageName>${project.artifactId}</imageName>
                     <baseImage>java</baseImage>
