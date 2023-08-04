@@ -94,7 +94,7 @@
                 <version>1.2.2</version>
                 <configuration>
                     <imageName>${project.artifactId}</imageName>
-                    <baseImage>java</baseImage>
+                    <baseImage>openjdk</baseImage>
                     <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
                     <resources>
                         <resource>
