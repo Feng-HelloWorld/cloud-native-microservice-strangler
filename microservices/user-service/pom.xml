@@ -86,38 +86,30 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <configuration>
-                    <images>
-                        <image>
-                            <name>${project.artifactId}:${project.version}</name> <!-- Modified to use artifactId instead of hardcoded value -->
-                            <alias>project-alias</alias> <!-- You might need to customize the alias -->
-                            <build>
-                                <from>openjdk:latest</from>
-                                <assembly>
-                                    <descriptorRef>artifact</descriptorRef>
-                                </assembly>
-                                <cmd>java -jar maven/${project.name}-${project.version}.jar</cmd>
-                            </build>
-                            <run>
-                                <wait>
-                                    <!-- You can customize this log to something meaningful for your application -->
-                                    <log>Application Started!</log>
-                                </wait>
-                            </run>
-                        </image>
-                    </images>
-                </configuration>
                 <executions>
                     <execution>
-                        <id>docker:start</id>
+                        <id>build-image</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>run</goal>
+                            <goal>build</goal>
                         </goals>
-                        <phase>install</phase>
                     </execution>
                 </executions>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.2.2</version>
+                <configuration>
+                    <imageName>${project.artifactId}</imageName>
+                    <baseImage>openjdk</baseImage>
+                    <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
             </plugin>
         </plugins>
     </build>
