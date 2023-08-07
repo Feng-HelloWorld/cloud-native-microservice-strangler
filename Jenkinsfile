@@ -26,12 +26,14 @@ pipeline {
         }
         stage ('Tag Docker Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: registryCredential, passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')])
+                withCredentials([usernamePassword(credentialsId: registryCredential, passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                 script {
 				    strangler_images.each { name->
 				        sh "docker tag ${name}:latest ${dockerHubUser}/${name}"
                 }
             }
+                }
+
         }
 
         }
