@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Checkout Git') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'Github-credential', url: 'https://github.com/darsan-antra/cloud-native-microservice-strangler-example.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'Github-credential', url: 'https://github.com/Feng-HelloWorld/cloud-native-microservice-strangler.git']]])
             }
         }
         stage('Build') {
