@@ -24,6 +24,7 @@ pipeline {
                 }
             }
         }
+
         stage ('Tag Docker Image') {
             steps {
                 withCredentials([usernamePassword(credentialsId: registryCredential, passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
@@ -42,11 +43,11 @@ pipeline {
             steps {
                                 withCredentials([usernamePassword(credentialsId: registryCredential, passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                 script {
-                    docker.withRegistry( '', registryCredential ) {
+                    sh "docker login -u ${dockerHubUser} -p ${dockerHubPassword}"
                         strangler_images.each { name->
                             sh "docker push ${dockerHubUser}/${name}"
                         }
-                    }
+                    
                 }}
             }
         }
