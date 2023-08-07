@@ -4,11 +4,11 @@ pipeline {
     agent {label 'workernode2'}
     
 
-
     environment {
         legacyedge =''
         customerservice = ''
-        registryCredential = 'DockerHub'
+        registryCredential = 'darsanantra-dockerhub'
+
     }
     
     stages {
@@ -20,16 +20,18 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-				    sh "mvn clean install"
+   sh "mvn clean install"
                 }
             }
         }
         stage ('Tag Docker Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: registryCredential, passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')])
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')])
+            }
                 script {
-				    strangler_images.each { name->
-				        sh "docker tag ${name}:latest ${dockerHubUser}/${name}"
+                    
+   strangler_images.each { name->
+       sh "docker tag ${name}:latest ${env.dockerHubUser}/${name}"
                 }
             }
         }
@@ -41,7 +43,7 @@ pipeline {
                 script {
                     docker.withRegistry( '', registryCredential ) {
                         strangler_images.each { name->
-                            sh "docker push ${dockerHubUser}/${name}"
+                            sh "docker push ${env.dockerHubUser}/${name}"
                         }
                     }
                 }
