@@ -40,13 +40,14 @@ pipeline {
         
         stage ('Upload Image') {
             steps {
+                                withCredentials([usernamePassword(credentialsId: registryCredential, passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                 script {
                     docker.withRegistry( '', registryCredential ) {
                         strangler_images.each { name->
                             sh "docker push ${dockerHubUser}/${name}"
                         }
                     }
-                }
+                }}
             }
         }
   
